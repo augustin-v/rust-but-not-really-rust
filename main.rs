@@ -11,6 +11,7 @@ extern "C" {
     fn sbrk(incr: intptr_t) -> *mut c_void;
 }
 
+// note: unwinding from rust to another language is UB
 #[panic_handler]
 fn panic(_: &PanicInfo) -> ! {
     loop {}

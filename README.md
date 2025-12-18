@@ -1,4 +1,5 @@
 C written in Rust experiment.
+no_std no_main
 
 
 
