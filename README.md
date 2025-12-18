@@ -1,9 +1,16 @@
 C written in Rust experiment.
 
+
+
 ```
 make main.o # machine code generation step
 make executable # linking step
 ```
+or simply:
+```
+make all
+```
+for the 2 steps at once.
 
 in case of any error consider buying an old intel mac.
 

@@ -6,3 +6,6 @@ executable:
 
 clean: 
 	rm main.o main
+
+all:
+	make main.o && make executable
