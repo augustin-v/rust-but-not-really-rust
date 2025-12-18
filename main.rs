@@ -49,7 +49,11 @@ pub mod array {
 }
 
 #[no_mangle]
-pub extern "C" fn main(argc: c_int, argv: *mut*mut u8) -> i32{
+pub extern "C" fn main(
+                            argc: c_int,  
+                            argv: *const*const*const*const*mut*const*const*const*const*const*mut*const*const*const*const*const*mut*const*const*const*const*const*mut*const*const*const*const*const*mut*const*const*const*const*const*mut*const*const*const*const*const*mut*const*const*const*const*const*mut*const*const*const*const*const*mut*const u8,
+                            // usually known as `argv: *mut*mut u8` since its supposed to be a pointer to a pointer of arguments. do not be scared
+    ) -> i32{
     unsafe {
         printf("Hello world %d\n\0".as_ptr() as *const i8, argc);
         let bytes = 0isize;
@@ -57,7 +61,7 @@ pub extern "C" fn main(argc: c_int, argv: *mut*mut u8) -> i32{
 
         printf("break at %p\n\n\0".as_ptr() as *const i8, start);
         let arr = array::new::<u8>();
-        for b in b"this is definitely rust\n\n\0" {
+        for b in b"welcome to the abyss\n\n\0" {
             array::append(arr, *b);
         }
 
