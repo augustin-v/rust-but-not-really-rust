@@ -2,6 +2,7 @@
 #![no_main]
 use core::ffi::{c_char, c_int, c_void};
 use core::panic::PanicInfo;
+use core::ptr;
 
 #[allow(non_camel_case_types)]
 type intptr_t = isize;
@@ -11,7 +12,6 @@ extern "C" {
     fn sbrk(incr: intptr_t) -> *mut c_void;
 }
 
-// note: unwinding from rust to another language is UB
 #[panic_handler]
 fn panic(_: &PanicInfo) -> ! {
     loop {}
@@ -31,6 +31,14 @@ pub mod array {
             let size = size_of::<T>() as isize;
 
             let new_ptr = sbrk(32isize * size) as *mut T;
+            let old_data = (*array).data as *mut T;
+
+            // have to do this so that the old data doesn't just get lost
+            // optimally we would also want to deallocate the memory for the old_ptr 
+            // but it is difficult with sbrk only returning last break.
+            // Also old values just leak, as they do not get zeroized it just 
+            // copies the old data into a new buffer with more cap
+            ptr::copy_nonoverlapping::<T>(old_data,  new_ptr, (*array).len);
             (*array).cap += 32;
             (*array).data = new_ptr;
         }
