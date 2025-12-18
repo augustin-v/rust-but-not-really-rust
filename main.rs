@@ -66,7 +66,9 @@ pub extern "C" fn main(argc: c_int, argv: *mut*mut u8) -> i32{
             let arg_ptr = *argv.add(i as usize);
             printf("arg %d: %s\n\0".as_ptr() as *const i8, i, arg_ptr as *const i8);
         }
-
+        // free the allocated memory
+        let total_bytes= size_of::<array::Array<u8>>() + (*arr).cap * size_of::<u8>();
+        sbrk(-(total_bytes as isize));
     }
     0
 }
